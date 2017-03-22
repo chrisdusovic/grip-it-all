@@ -1,9 +1,10 @@
+// flex sensor --> PC0
+// servo --> PB1
+
 #include <avr/io.h>
 
 #define PIN_SET(PORT, PIN) PORT |= 1 << PIN
 #define PIN_CLEAR(PORT, PIN) PORT &= ~(1 << PIN)
-
-// flex sensor --> PC0
 
 int main(void)
 {
@@ -15,4 +16,10 @@ int main(void)
 	ADMUX |= (1 << ADLAR);
 	ADCSRA |= (1 << ADEN);
 	ADCSRA |= (1 << ADSC);
+
+	// Set up servo.
+	DDRB |= (1 << DDB1);
+	TCCR1A |= (1 << WGM11) | (1 << COM1A1);
+	TCCR1B |= (1 << WGM13) | (1 << WGM12) | (1 << CS11);
+	ICR1 = 19999;
 }
