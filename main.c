@@ -1,5 +1,7 @@
 // flex sensor --> PC0
 // servo --> PB1
+// force LED red --> PD6
+// force LED green -> PD5
 
 #include <avr/io.h>
 
@@ -22,4 +24,9 @@ int main(void)
 	TCCR1A |= (1 << WGM11) | (1 << COM1A1);
 	TCCR1B |= (1 << WGM13) | (1 << WGM12) | (1 << CS11);
 	ICR1 = 19999;
+
+	// Set up force indicator LED.
+	DDRD |= (1 << DDD6) | (1 << DDD5);
+	TCCR0A |= (1 << COM0A1) | (1 << COM0B1) | (1 << WGM01) | (1 << WGM00);
+	TCCR0B |= (1 << CS00);
 }
