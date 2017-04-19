@@ -6,9 +6,13 @@
 // lock switch --> PD2
 
 #include <avr/io.h>
+#include <util/delay.h>
 
 #define PIN_SET(PORT, PIN) PORT |= 1 << PIN
 #define PIN_CLEAR(PORT, PIN) PORT &= ~(1 << PIN)
+
+// Re-maps a number from one range to another
+inline int map(int x, int in_min, int in_max, int out_min, int out_max);
 
 int main(void)
 {
@@ -37,4 +41,24 @@ int main(void)
 
 	// Set up lock switch.
 	DDRD &= ~(1 << PD2);
+
+	// Enable status LED.
+	PIN_SET(PORTB, PORTB0);
+
+	while (1)
+	{
+		// Operation is dependent on lock switch position.
+		if (PIND & (1<<PD2))
+		{
+			// Set servo position based on flex sensor reading.
+			OCR1A = map(ADCH, 150, 200, 1075, 1700);
+		}
+		_delay_ms(10);
+	}
+}
+
+
+inline int map(int x, int in_min, int in_max, int out_min, int out_max)
+{
+	return floor((x - in_min) * ((float) out_max - out_min) / (in_max - in_min) + out_min);
 }
