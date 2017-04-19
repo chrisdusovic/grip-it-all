@@ -3,6 +3,7 @@
 // force LED red --> PD6
 // force LED green -> PD5
 // status LED --> PB0
+// lock switch --> PD2
 
 #include <avr/io.h>
 
@@ -33,4 +34,7 @@ int main(void)
 
 	// Set up status LED.
 	DDRB |= (1 << DDB0);
+
+	// Set up lock switch.
+	DDRD &= ~(1 << PD2);
 }
