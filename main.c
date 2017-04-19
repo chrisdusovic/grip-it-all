@@ -2,6 +2,7 @@
 // servo --> PB1
 // force LED red --> PD6
 // force LED green -> PD5
+// status LED --> PB0
 
 #include <avr/io.h>
 
@@ -29,4 +30,7 @@ int main(void)
 	DDRD |= (1 << DDD6) | (1 << DDD5);
 	TCCR0A |= (1 << COM0A1) | (1 << COM0B1) | (1 << WGM01) | (1 << WGM00);
 	TCCR0B |= (1 << CS00);
+
+	// Set up status LED.
+	DDRB |= (1 << DDB0);
 }
